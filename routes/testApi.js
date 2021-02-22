@@ -1,5 +1,8 @@
+/* This is our main Api please disregard refering to other routes (index and users) */
 var express = require("express");
 var router = express.Router();
+
+// hardcoded tasks array of objects
 let tasks = [
   {
     id: 1,
@@ -18,14 +21,17 @@ let tasks = [
   },
 ];
 
+// get all tasks function
 router.get("/", function (req, res, next) {
   res.json(tasks);
 });
 
+// get a task with certain id function
 router.get("/:id", function (req, res, next) {
   res.json(tasks[req.params.id - 1]);
 });
 
+//delete a task with certain id
 router.delete("/:id", (req, res, next) => {
   const id = req.params.id;
 
@@ -34,6 +40,7 @@ router.delete("/:id", (req, res, next) => {
   res.status(200).json({ message: "post Deleted !" });
 });
 
+//add new tasks coming from frontend
 router.post("/", (req, res, next) => {
   const task = {
     id: req.body.id,
@@ -43,6 +50,8 @@ router.post("/", (req, res, next) => {
 
   tasks.push(task);
 });
+
+//edit tasks
 router.put("/", (req, res, next) => {
   const id = req.body.id;
 
@@ -51,6 +60,7 @@ router.put("/", (req, res, next) => {
   tasks[index].description = req.body.description;
 });
 
+//searchTerm route and filtering the results and sending back the response (filtered array)
 router.get("/search/:searchTerm", function (req, res) {
   var response = [];
   if (typeof req.params.searchTerm != "undefined") {
